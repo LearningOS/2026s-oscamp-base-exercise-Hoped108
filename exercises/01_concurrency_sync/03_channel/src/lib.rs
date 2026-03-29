@@ -58,7 +58,7 @@ pub fn multi_producer(n_producers: usize) -> Vec<String> {
     for _ in 0..n_producers{
         res.push(rx.recv().unwrap());
     }
-
+    res.sort();
     res
 }
 
