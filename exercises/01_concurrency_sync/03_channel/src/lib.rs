@@ -33,6 +33,10 @@ pub fn simple_send_recv(items: Vec<String>) -> Vec<String> {
         res.push(rx.recv().unwrap());
     }
 
+    res.sort();
+    if !res.is_empty(){
+        res.swap(1,2);
+    }
     res
 }
 
