@@ -6,6 +6,8 @@
 //! - `tokio::select!` waits for multiple async operations simultaneously
 //! - `tokio::time::timeout` timeout control
 //! - The first completed branch is executed, others are cancelled
+//!  CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_RUNNER='/usr/bin/qemu-riscv64-static -L /usr/riscv64-linux-gnu' \
+//!  ./target/debug/oscamp list
 
 use std::future::Future;
 use tokio::time::{sleep, Duration};
@@ -21,7 +23,10 @@ where
 {
     // TODO: Use tokio::select! to race between future and sleep
     // Or use tokio::time::timeout
-    todo!()
+    tokio::select! { 
+        _ = sleep(Duration::from_millis(timeout_ms)) => None,
+        f = future => Some(f),
+    }
 }
 
 /// Race two async tasks, return the result of whichever finishes first.
@@ -34,7 +39,11 @@ where
 {
     // TODO: Use tokio::select! to wait for f1 and f2
     // Return the result of whichever completes first
-    todo!()
+    let res = tokio::select! {
+        a = f1 => a,
+        b = f2 => b,
+    };
+    res
 }
 
 #[cfg(test)]
